@@ -16,7 +16,7 @@ public class AcDecide extends Event {
 		return consensusId;
 	}
 
-	public int getValue() {
+	public Integer getValue() {
 		return value;
 	}
 }
