@@ -59,11 +59,13 @@ public class AcComponent extends ComponentDefinition {
 	
 	Handler<AcPropose> initAcPropose = new Handler<AcPropose>() {
 		public void handle(AcPropose event) {
+			int id = event.getConsensusId();
 			initInstance(id);
-			int oldTstamp = tstamp.get(event.getConsensusId());
-			tstamp.put(event.getConsensusId(),oldTstamp+numberOfNodes);
+			int oldTstamp = tstamp.get(id);
+			tstamp.put(id,oldTstamp+numberOfNodes);
+			tempValue.put(event.getConsensusId(), event.getValue());
 		}
-	}
+	};
 
 
 
