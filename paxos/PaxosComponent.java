@@ -9,6 +9,7 @@ import java.util.concurrent.ThreadPoolExecutor.AbortPolicy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import se.kth.ict.id2203.assignment3.beb.BebBroadcast;
 import se.kth.ict.id2203.assignment3.beb.BebBroadcastPort;
 import se.kth.ict.id2203.assignment4.PaxosApplication;
 import se.kth.ict.id2203.assignment4.ac.AcDecide;
@@ -20,6 +21,7 @@ import se.kth.ict.id2203.assignment4.eld.EldTrustEvent;
 import se.kth.ict.id2203.console.Console;
 import se.sics.kompics.ComponentDefinition;
 import se.sics.kompics.Handler;
+import se.sics.kompics.Negative;
 import se.sics.kompics.Positive;
 import se.sics.kompics.address.Address;
 
@@ -29,12 +31,13 @@ public class PaxosComponent extends ComponentDefinition{
 	Positive<BebBroadcastPort> beb = requires(BebBroadcastPort.class);
 	Positive<AcPort> ac = requires(AcPort.class);
 	Positive<EldPort> eld = requires(EldPort.class);
+	Negative<PaxosPort> uc = provides(PaxosPort.class);
 	
 	private static final Logger logger = LoggerFactory.getLogger(PaxosApplication.class);
 	
 	
 	private Boolean leader;
-	private int selfId;
+	private Address self;
 	private List<Integer> seenIds;
 	private Map<Integer, Integer> proposals;
 	private Map<Integer, Boolean> proposed;
@@ -49,7 +52,7 @@ public class PaxosComponent extends ComponentDefinition{
 
 		@Override
 		public void handle(PaxosInit event) {
-			selfId = event.getSelf().getId();
+			self = event.getSelf();
 			proposals = new HashMap<Integer, Integer>();
 			proposed = new HashMap<Integer, Boolean>();
 			decided = new HashMap<Integer, Boolean>();
@@ -62,7 +65,7 @@ public class PaxosComponent extends ComponentDefinition{
 
 		@Override
 		public void handle(EldTrustEvent event) {
-			if (event.getLeader().getId() == selfId){
+			if (event.getLeader().getId() == self.getId()){
 				leader = true;
 				for(int id: seenIds){
 					tryPropose(id);
@@ -90,8 +93,26 @@ public class PaxosComponent extends ComponentDefinition{
 
 		@Override
 		public void handle(AcDecide event) {
+			int consensusId = event.getConsensusId();
 			if(event.getValue() != null){
-				
+				trigger(new BebBroadcast(new DecidedMsg(self, consensusId, 
+						event.getValue())), beb);
+			}else{
+				proposed.put(consensusId, false);
+				tryPropose(consensusId);
+			}
+		}
+	};
+	
+	Handler<DecidedMsg> handleUcDecide = new Handler<DecidedMsg>() {
+
+		@Override
+		public void handle(DecidedMsg event) {
+			int id = event.getId();
+			initInstance(id);
+			if( decided.containsKey(id) && (!decided.get(id)) ){
+				decided.put(id, true);
+				trigger(new UcDecide(id, event.getVal()),uc);
 			}
 		}
 	};
