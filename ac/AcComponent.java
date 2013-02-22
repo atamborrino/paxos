@@ -148,7 +148,7 @@ public class AcComponent extends ComponentDefinition {
 			logger.info("Acceptor: rcv WRITE message");
 
 			initInstance(id);
-			if (rts.get(id) >= ts || wts.get(id) >= ts) {
+			if (rts.get(id) > ts || wts.get(id) > ts) {
 				trigger(new Pp2pSend(event.getSource(), new Nack(self, id)), pp2pPort);
 			} else {
 				value.put(id, v);
