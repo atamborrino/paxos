@@ -38,10 +38,6 @@ public class PaxosApplication extends ComponentDefinition{
 	private boolean d;
 	private int sleep;
 
-	public PaxosApplication(){
-
-	}
-
 	Handler<UcDecide> handleUcDecide = new Handler<UcDecide>() {
 
 		@Override
