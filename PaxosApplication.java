@@ -113,8 +113,9 @@ public class PaxosApplication extends ComponentDefinition{
 			}
 		} else if (cmd.startsWith("P")) {
 			// Proposing a value in a consensus instance
-			int instanceId = Integer.parseInt(cmd.substring(1,2));
-			int value = Integer.parseInt(cmd.substring(3,4));
+			List<String> pCmd = new ArrayList<String>(Arrays.asList(cmd.split("-")));
+			int instanceId = Integer.parseInt(pCmd.get(0).substring(1));
+			int value = Integer.parseInt(pCmd.get(1));
 			ongoingProp.put(instanceId, value);
 			logger.info("Proposing value "+value+" for instance "+instanceId);
 			trigger(new UcPropose(instanceId, value), paxos);
