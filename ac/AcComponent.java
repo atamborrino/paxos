@@ -70,6 +70,7 @@ public class AcComponent extends ComponentDefinition {
 			rank = event.getNodeId();
 			numberOfNodes = event.getNumberOfNodes();
 			self = event.getSelf();
+			logger.info("Started");
 		}
 	};
 	
