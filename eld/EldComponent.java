@@ -25,7 +25,7 @@ public class EldComponent extends ComponentDefinition{
 	Positive<PerfectPointToPointLink> pp2p = requires(PerfectPointToPointLink.class);
 	Negative<EldPort> eld = provides(EldPort.class);
 	
-	private static final Logger logger = LoggerFactory.getLogger(PaxosApplication.class);
+	private static final Logger logger = LoggerFactory.getLogger(EldComponent.class);
 	
 	private List<Address> neighbors;
 	private Address self;
@@ -74,7 +74,7 @@ public class EldComponent extends ComponentDefinition{
 				period += delta;
 				leader = newLeader;
 				
-				logger.info("ELD -- trusting new leader: node "+leader.getId());
+				logger.info("Trusting new leader: node "+leader.getId());
 				
 				trigger(new EldTrustEvent(newLeader), eld);
 			}
