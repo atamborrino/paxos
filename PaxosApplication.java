@@ -70,7 +70,7 @@ public class PaxosApplication extends ComponentDefinition{
 			logger.info("Initialization done");
 			blocking = false;
 			sleep = 0;
-			d = true;
+			d = false;
 		}
 	};
 
