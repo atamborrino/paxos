@@ -31,6 +31,10 @@ public class ExecutorPaxos {
 			}
 		};
 
+		sc1.executeOn(topo1);
+
+		System.exit(0);
+
 	}
 
 }
