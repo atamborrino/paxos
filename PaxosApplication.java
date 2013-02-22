@@ -63,9 +63,6 @@ public class PaxosApplication extends ComponentDefinition{
 			decisions = new HashMap<Integer, Integer>();
 			ongoingProp = new HashMap<Integer, Integer>();
 			commands = new ArrayList<String>(Arrays.asList(event.getCommandScript().split(":")));
-			for (String cmd : commands) {
-				logger.info("cmd: " + cmd);
-			}
 			commands.add("$DONE");
 			logger.info("Initialization done");
 			blocking = false;
