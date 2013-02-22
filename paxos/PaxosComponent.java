@@ -120,7 +120,8 @@ public class PaxosComponent extends ComponentDefinition{
 			int id = event.getId();
 			initInstance(id);
 			if( decided.containsKey(id) && (!decided.get(id)) ){
-				logger.info("Instance: "+id+" value: "+event.getVal());
+				logger.info("Triggering UcDecide: Instance: " + id + " value: "
+						+ event.getVal());
 				decided.put(id, true);
 				trigger(new UcDecide(id, event.getVal()),uc);
 			}
