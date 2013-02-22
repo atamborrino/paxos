@@ -117,7 +117,7 @@ public class AcComponent extends ComponentDefinition {
 			int id = event.getConsensusId();
 			int ts = event.getTimestamp();
 			int sentts = event.getSentTimestamp();
-			int v = event.getValue();
+			Integer v = event.getValue();
 			logger.info("Proposer: rcv ReadACK message");
 
 			if (sentts == tstamp.get(id)) {
@@ -144,7 +144,7 @@ public class AcComponent extends ComponentDefinition {
 		public void handle(Write event) {
 			int id = event.getConsensusId();
 			int ts = event.getTs();
-			int v = event.getValue();
+			Integer v = event.getValue();
 			logger.info("Acceptor: rcv WRITE message");
 
 			initInstance(id);
