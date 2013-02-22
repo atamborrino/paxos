@@ -7,7 +7,7 @@ public class PaxosInit extends Init{
 	private Address self;
 	
 	public PaxosInit(Address self){
-		self = self;
+		this.self = self;
 	}
 
 	public Address getSelf() {
