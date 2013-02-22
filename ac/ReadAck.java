@@ -12,10 +12,10 @@ public class ReadAck extends Pp2pDeliver {
 
 	private final int consensusId;
 	private final int timestamp;
-	private final int value;
+	private final Integer value;
 	private final int sentTimestamp;
 
-	public ReadAck(Address source, int consensusId, int timestamp, int value, int sentTimestamp) {
+	public ReadAck(Address source, int consensusId, int timestamp, Integer value, int sentTimestamp) {
 		super(source);
 		this.consensusId = consensusId;
 		this.timestamp = timestamp;
@@ -31,7 +31,7 @@ public class ReadAck extends Pp2pDeliver {
 		return timestamp;
 	}
 
-	public int getValue() {
+	public Integer getValue() {
 		return value;
 	}
 

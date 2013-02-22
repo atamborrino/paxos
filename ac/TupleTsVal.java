@@ -2,9 +2,9 @@ package se.kth.ict.id2203.assignment4.ac;
 
 public class TupleTsVal {
 	private final int timestamp;
-	private final int value;
+	private final Integer value;
 
-	public TupleTsVal(int timestamp, int value) {
+	public TupleTsVal(int timestamp, Integer value) {
 		super();
 		this.timestamp = timestamp;
 		this.value = value;
@@ -14,8 +14,16 @@ public class TupleTsVal {
 		return timestamp;
 	}
 
-	public int getValue() {
+	public Integer getValue() {
 		return value;
+	}
+
+	public boolean gt(TupleTsVal other) {
+		if (timestamp > other.timestamp) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 }

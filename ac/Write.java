@@ -3,28 +3,28 @@ package se.kth.ict.id2203.assignment4.ac;
 import se.kth.ict.id2203.assignment3.beb.BebDeliver;
 import se.sics.kompics.address.Address;
 
-public class Read extends BebDeliver {
-	/**
-	 *
-	 */
-	private static final long serialVersionUID = 6725846653895098903L;
-
+public class Write extends BebDeliver {
 	private final int consensusId;
-	private final int tstamp;
+	private final int ts;
+	private final Integer value;
 
-	public Read(Address source, int consensusId, int tstamp) {
+	public Write(Address source, int consensusId, int ts, Integer value) {
 		super(source);
 		this.consensusId = consensusId;
-		this.tstamp = tstamp;
+		this.ts = ts;
+		this.value = value;
 	}
 
 	public int getConsensusId() {
 		return consensusId;
 	}
 
-	public int getTstamp() {
-		return tstamp;
+	public int getTs() {
+		return ts;
 	}
 
+	public Integer getValue() {
+		return value;
+	}
 
 }

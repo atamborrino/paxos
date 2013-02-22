@@ -4,7 +4,7 @@ import se.sics.kompics.Event;
 
 public class AcPropose extends Event {
 	private final int consensusId;
-	private final int value;
+	private final Integer value;
 
 	public AcPropose(int consensusId, int value) {
 		super();
@@ -16,7 +16,7 @@ public class AcPropose extends Event {
 		return consensusId;
 	}
 
-	public int getValue() {
+	public Integer getValue() {
 		return value;
 	}
 
