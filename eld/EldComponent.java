@@ -100,7 +100,7 @@ public class EldComponent extends ComponentDefinition{
 			if (min == null){
 				min = node;
 			}else{
-				if (node.getId() > min.getId()){
+				if (node.getId() < min.getId()){
 					min = node;
 				}
 			}
