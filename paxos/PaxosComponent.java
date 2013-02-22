@@ -19,6 +19,7 @@ import se.kth.ict.id2203.assignment4.eld.EldHeartbeatMsg;
 import se.kth.ict.id2203.assignment4.eld.EldPort;
 import se.kth.ict.id2203.assignment4.eld.EldTrustEvent;
 import se.kth.ict.id2203.console.Console;
+import se.kth.ict.id2203.pp2p.Pp2pDeliver;
 import se.sics.kompics.ComponentDefinition;
 import se.sics.kompics.Handler;
 import se.sics.kompics.Negative;
@@ -45,6 +46,11 @@ public class PaxosComponent extends ComponentDefinition{
 	
 	public PaxosComponent(){
 		subscribe(handleInit, control);
+		subscribe(handleTrust, eld);
+		subscribe(handleUcPropose, uc);
+		subscribe(handleAcDecide, ac);
+		subscribe(handleDecideMsg, beb);
+		
 		
 	}
 	
@@ -58,6 +64,7 @@ public class PaxosComponent extends ComponentDefinition{
 			decided = new HashMap<Integer, Boolean>();
 			seenIds = new ArrayList<Integer>();
 			leader = false;
+			logger.info("PAXOS -- paxos component initialized");
 		}
 	};
 	
@@ -65,7 +72,9 @@ public class PaxosComponent extends ComponentDefinition{
 
 		@Override
 		public void handle(EldTrustEvent event) {
+			logger.info("PAXOS -- got EldTrustEvent - trusted node: "+event.getLeader().getId());
 			if (event.getLeader().getId() == self.getId()){
+				logger.info("PAXOS -- I am the new leader");
 				leader = true;
 				for(int id: seenIds){
 					tryPropose(id);
@@ -81,6 +90,7 @@ public class PaxosComponent extends ComponentDefinition{
 
 		@Override
 		public void handle(UcPropose event) {
+			logger.info("PAXOS -- proposing value "+event.getVal()+" for instance "+event.getId());
 			int id = event.getId();
 			initInstance(id);
 			proposals.put(id, event.getVal());
@@ -95,6 +105,7 @@ public class PaxosComponent extends ComponentDefinition{
 		public void handle(AcDecide event) {
 			int consensusId = event.getConsensusId();
 			if(event.getValue() != null){
+				logger.info("PAXOS -- got AcDecide: instance: "+consensusId+" value: "+event.getValue());
 				trigger(new BebBroadcast(new DecidedMsg(self, consensusId, 
 						event.getValue())), beb);
 			}else{
@@ -104,13 +115,14 @@ public class PaxosComponent extends ComponentDefinition{
 		}
 	};
 	
-	Handler<DecidedMsg> handleUcDecide = new Handler<DecidedMsg>() {
+	Handler<DecidedMsg> handleDecideMsg = new Handler<DecidedMsg>() {
 
 		@Override
 		public void handle(DecidedMsg event) {
 			int id = event.getId();
 			initInstance(id);
 			if( decided.containsKey(id) && (!decided.get(id)) ){
+				logger.info("PAXOS -- instance: "+id+" value: "+event.getVal());
 				decided.put(id, true);
 				trigger(new UcDecide(id, event.getVal()),uc);
 			}
@@ -127,7 +139,7 @@ public class PaxosComponent extends ComponentDefinition{
 	}
 
 	public void tryPropose(int id){
-		if( (leader) && (!proposed.get(id)) && (proposals.containsKey(id))){
+		if( (leader) && ((proposed.containsKey(id)) && (!proposed.get(id))) && (proposals.containsKey(id))){
 			proposed.put(id,true);
 			trigger(new AcPropose(id, proposals.get(id)), ac);
 		}
