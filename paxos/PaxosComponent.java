@@ -4,22 +4,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ThreadPoolExecutor.AbortPolicy;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import se.kth.ict.id2203.assignment3.beb.BebBroadcast;
 import se.kth.ict.id2203.assignment3.beb.BebBroadcastPort;
-import se.kth.ict.id2203.assignment4.PaxosApplication;
 import se.kth.ict.id2203.assignment4.ac.AcDecide;
 import se.kth.ict.id2203.assignment4.ac.AcPort;
 import se.kth.ict.id2203.assignment4.ac.AcPropose;
-import se.kth.ict.id2203.assignment4.eld.EldHeartbeatMsg;
 import se.kth.ict.id2203.assignment4.eld.EldPort;
 import se.kth.ict.id2203.assignment4.eld.EldTrustEvent;
 import se.kth.ict.id2203.console.Console;
-import se.kth.ict.id2203.pp2p.Pp2pDeliver;
 import se.sics.kompics.ComponentDefinition;
 import se.sics.kompics.Handler;
 import se.sics.kompics.Negative;
@@ -104,11 +100,13 @@ public class PaxosComponent extends ComponentDefinition{
 		@Override
 		public void handle(AcDecide event) {
 			int consensusId = event.getConsensusId();
+
 			if(event.getValue() != null){
 				logger.info("Got AcDecide: instance: "+consensusId+" value: "+event.getValue());
 				trigger(new BebBroadcast(new DecidedMsg(self, consensusId, 
 						event.getValue())), beb);
 			}else{
+				logger.info("AcDecide received, decided value == null");
 				proposed.put(consensusId, false);
 				tryPropose(consensusId);
 			}
@@ -139,7 +137,10 @@ public class PaxosComponent extends ComponentDefinition{
 	}
 
 	public void tryPropose(int id){
+		
 		if( (leader) && ((proposed.containsKey(id)) && (!proposed.get(id))) && (proposals.containsKey(id))){
+			logger.info("Proposing value " + proposals.get(id)
+					+ " for instance " + id);
 			proposed.put(id,true);
 			trigger(new AcPropose(id, proposals.get(id)), ac);
 		}
