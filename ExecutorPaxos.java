@@ -1,6 +1,5 @@
 package se.kth.ict.id2203.assignment4;
 
-import se.kth.ict.id2203.assignment3.FailSilentAR.FailSilentARMain;
 import se.sics.kompics.launch.Scenario;
 import se.sics.kompics.launch.Topology;
 
@@ -19,7 +18,7 @@ public class ExecutorPaxos {
 			}
 		};
 
-		Scenario sc1 = new Scenario(FailSilentARMain.class) {
+		Scenario sc1 = new Scenario(PaxosMain.class) {
 			{
 				String cmd1 = "D2200:P1-1";
 				String cmd2 = "D2000:P1-2";

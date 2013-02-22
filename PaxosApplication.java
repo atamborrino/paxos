@@ -11,11 +11,6 @@ import org.slf4j.LoggerFactory;
 
 import se.kth.ict.id2203.application.Application0Init;
 import se.kth.ict.id2203.application.ApplicationContinue;
-import se.kth.ict.id2203.assignment3.ReadRequest;
-import se.kth.ict.id2203.assignment3.ReadResponse;
-import se.kth.ict.id2203.assignment3.WriteRequest;
-import se.kth.ict.id2203.assignment3.WriteResponse;
-import se.kth.ict.id2203.assignment3.failStopAR.FailStopARApplication;
 import se.kth.ict.id2203.assignment4.paxos.PaxosPort;
 import se.kth.ict.id2203.assignment4.paxos.UcDecide;
 import se.kth.ict.id2203.assignment4.paxos.UcPropose;
@@ -64,6 +59,9 @@ public class PaxosApplication extends ComponentDefinition{
 			decisions = new HashMap<Integer, Integer>();
 			ongoingProp = new HashMap<Integer, Integer>();
 			commands = new ArrayList<String>(Arrays.asList(event.getCommandScript().split(":")));
+			for (String cmd : commands) {
+				System.out.println("cmd: " + cmd);
+			}
 			commands.add("$DONE");
 			logger.info("Initialization done");
 			blocking = false;
