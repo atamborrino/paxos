@@ -54,6 +54,26 @@ public class ExecutorPaxos {
 			}
 		};
 
+		Topology topo4 = new Topology() {
+			{
+				node(1, "127.0.0.1", 22055);
+				node(2, "127.0.0.1", 22056);
+
+				defaultLinks(1000, 0);
+
+			}
+		};
+
+		Scenario sc4 = new Scenario(PaxosMain.class) {
+			{
+				String cmd1 = "D1100:P1-1:D1000:W";
+				String cmd2 = "D1100:P1-2:D1000:W";
+
+				command(1, cmd1);
+				command(2, cmd2);
+			}
+		};
+
 		sc1.executeOn(topo1);
 
 		System.exit(0);
