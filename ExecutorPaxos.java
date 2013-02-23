@@ -13,7 +13,7 @@ public class ExecutorPaxos {
 				node(2, "127.0.0.1", 22056);
 				node(3, "127.0.0.1", 22057);
 
-				defaultLinks(1000, 0);
+				defaultLinks(5000, 0);
 
 			}
 		};

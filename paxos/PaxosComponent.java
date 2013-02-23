@@ -107,7 +107,7 @@ public class PaxosComponent extends ComponentDefinition{
 				trigger(new BebBroadcast(new DecidedMsg(self, consensusId, 
 						event.getValue())), beb);
 			}else{
-				logger.info("Got AcDecide received, instance: " + consensusId
+				logger.info("Got AcDecide: instance: " + consensusId
 						+ " ABORTED");
 				proposed.put(consensusId, false);
 				tryPropose(consensusId);
