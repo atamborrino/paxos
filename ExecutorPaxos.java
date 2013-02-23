@@ -74,7 +74,7 @@ public class ExecutorPaxos {
 			}
 		};
 
-		sc1.executeOn(topo1);
+		sc4.executeOn(topo4);
 
 		System.exit(0);
 		// sc1.executeOn(topo1);

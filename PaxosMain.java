@@ -74,7 +74,7 @@ public class PaxosMain extends ComponentDefinition {
 		Address self = topology.getSelfAddress();
 		Set<Address> neighborSet = topology.getNeighbors(self);
 		int timeDelay = 1000;
-		int delta = 700;
+		int delta = 200;
 
 		trigger(new MinaNetworkInit(self, 5), network.control());
 		trigger(new DelayLinkInit(topology), pp2p.control());
