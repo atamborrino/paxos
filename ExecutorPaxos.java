@@ -30,10 +30,34 @@ public class ExecutorPaxos {
 			}
 		};
 
+		Scenario sc2 = new Scenario(PaxosMain.class) {
+			{
+				String cmd1 = "D2000:P1-1";
+				String cmd2 = "D2200:P1-2";
+				String cmd3 = "D2200:P1-3";
+
+				command(1, cmd1);
+				command(2, cmd2);
+				command(3, cmd3);
+			}
+		};
+
+		Scenario sc0 = new Scenario(PaxosMain.class) {
+			{
+				String cmd1 = "P1-7:D100:P3-3:P4-10:D20000:W";
+				String cmd2 = "P1-8:D100:P3-4:P4-11:D20000:W";
+				String cmd3 = "P1-9:D100:P3-5:P4-12:D20000:W";
+
+				command(1, cmd1);
+				command(2, cmd2);
+				command(3, cmd3);
+			}
+		};
+
 		sc1.executeOn(topo1);
 
 		System.exit(0);
-
+		// sc1.executeOn(topo1);
 	}
 
 }

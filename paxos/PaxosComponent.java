@@ -102,11 +102,13 @@ public class PaxosComponent extends ComponentDefinition{
 			int consensusId = event.getConsensusId();
 
 			if(event.getValue() != null){
-				logger.info("Got AcDecide: instance: "+consensusId+" value: "+event.getValue());
+				logger.info("Got AcDecide: instance: " + consensusId
+						+ "\t decided value: " + event.getValue());
 				trigger(new BebBroadcast(new DecidedMsg(self, consensusId, 
 						event.getValue())), beb);
 			}else{
-				logger.info("AcDecide received, decided value == null");
+				logger.info("Got AcDecide received, instance: " + consensusId
+						+ " ABORTED");
 				proposed.put(consensusId, false);
 				tryPropose(consensusId);
 			}
